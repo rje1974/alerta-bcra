@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="alerta-bcra" width="240">
+</p>
+
 # alerta-bcra
 
 > Avisa cuando los CUITs de tu cartera cambian de situación en la Central
