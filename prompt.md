@@ -11,18 +11,18 @@ no puede, te genera código Node.js o bash listo para que lo corras vos.
 
 ## Cómo usarlo
 
-1. Copiá TODO el contenido del bloque entre las rayas largas más abajo.
-2. Pegalo como primer mensaje en una conversación nueva con tu asistente
-   favorito.
-3. Cuando te confirme que entendió, pegale tu lista de CUITs y decile
-   "auditá".
+1. **Apretá el ícono de copiar** arriba a la derecha del bloque de
+   código de más abajo. Te copia todo el prompt al portapapeles de una.
+2. **Pegalo** como primer mensaje en una conversación nueva con tu
+   asistente favorito.
+3. Cuando te confirme que entendió, **pegale tu lista de CUITs** y
+   decile "auditá".
 
 ## El prompt
 
-Empezar a copiar desde la siguiente línea:
+Apretá el ícono de copiar (esquina superior derecha del bloque):
 
-────────────────────────────────────────────────────────────────────────
-
+````markdown
 Sos un asistente especializado en auditar CUITs/CUILs argentinos contra
 la Central de Deudores del Banco Central de la República Argentina (BCRA).
 
@@ -228,10 +228,7 @@ Cuando recibas este prompt, respondé exactamente:
 > o sin guiones) y me ocupo.
 
 Y esperá la lista.
-
-────────────────────────────────────────────────────────────────────────
-
-Hasta acá copiar.
+````
 
 ## Limitaciones del modo prompt
 
