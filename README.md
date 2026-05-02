@@ -116,6 +116,19 @@ prompts, otros cargan skills, otros prefieren correr un programa propio.
 Por eso esto viene en tres formatos. Cubrir los tres es la forma más
 honesta de que cada uno lo use con su asistente favorito.
 
+## Agradecimientos
+
+Este proyecto existe porque el **BCRA** publica la
+[API pública de Central de Deudores](https://www.bcra.gob.ar/Catalogo/EstadisticaCentralDeudores.asp)
+de forma gratuita y sin autenticación. Eso convierte a la información
+crediticia en un bien común al que cualquiera puede acceder. Gracias
+por bancar la apertura de datos.
+
+Y también a [`mcp-bcra` de mortiz-dev](https://github.com/mortiz-dev/mcp-bcra) —
+ya mencionado más arriba, pero vale repetirlo: esa implementación es
+más completa en endpoints y muestra que hay otros argentinos haciendo
+herramientas alrededor de los mismos datos.
+
 ## Si te sirvió
 
 ⭐ Dejame una estrella en el repo o invitame
