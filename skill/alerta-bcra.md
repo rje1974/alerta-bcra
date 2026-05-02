@@ -111,7 +111,7 @@ periodo más reciente.
 
 ---
 
-## Cómo hacer el fetch (copy-paste para vos, Claude)
+## Cómo hacer el fetch (copy-paste para el agente)
 
 Sin instalar nada, en cualquier proyecto Node.js 18+:
 
@@ -177,7 +177,7 @@ Auditados N CUITs.
   • XX-XXXXXXXX-X — Razón Social
     1 (normal) → 3 (cumplimiento deficiente) · $100.000 → $850.000
 
-+ Nuevos en mora (k)
++ Aparecen con deuda BCRA (k)
   • XX-XXXXXXXX-X — Razón Social
     Sit. 2 (riesgo bajo) · $250.000
 
@@ -343,7 +343,7 @@ Después de cada corrida, si guardaste snapshot, ofrecé al usuario:
 >   • 20-12345678-9 — JUAN PEREZ
 >     1 (normal) → 3 (cumplimiento deficiente) · $100.000 → $850.000
 >
-> + Nuevos en mora (1)
+> + Aparecen con deuda BCRA (1)
 >   • 27-87654321-2 — MARIA LOPEZ
 >     Sit. 2 (riesgo bajo) · $50.000
 > ```

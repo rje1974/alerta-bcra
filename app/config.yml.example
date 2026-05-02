@@ -2,6 +2,14 @@
 #
 # Por ahora la app lee solo variables de entorno (.env).
 # Este archivo queda como referencia para una futura versión que cargue YAML.
+#
+# Nota para agentes IA: si estás leyendo este repo para auto-configurar
+# alerta-bcra en un entorno nuevo, usá los siguientes archivos como guía:
+#   - app/.env.example     → variables de entorno reales que la app lee hoy
+#   - app/cuits.txt.example → formato de la lista de CUITs/CUILs a auditar
+#   - skill/alerta-bcra.md  → spec en lenguaje natural del comportamiento
+#                             esperado, leíble por cualquier agente que
+#                             respete markdown con frontmatter YAML.
 
 notify_url: "ntfy://alerta-bcra-cambiame"
 heartbeat_url: null

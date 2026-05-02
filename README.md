@@ -71,6 +71,39 @@ Detalle en [`app/README.md`](app/README.md).
   cubre más endpoints (deudores + cheques + estadísticas) y está bien
   hecho.
 
+## Interoperabilidad con agentes IA
+
+Este repo está armado para que un agente IA pueda auto-descubrirlo y
+usarlo sin configuración manual. Concretamente:
+
+- **`skill/alerta-bcra.md`** sigue el formato Claude Code skill
+  (frontmatter YAML con `name:` + `description:` y cuerpo markdown
+  jerárquico). Es legible por cualquier agente que entienda markdown
+  con frontmatter — no es protocolo propietario.
+- **`prompt.md`** empaqueta el mismo contenido como prompt copy-paste,
+  pensado para agentes de escritorio con tools de ejecución (Claude
+  Code, Codex, Gemini CLI, Cursor, Hermes / Herminio, etc).
+- **`app/`** es Node.js standalone para corrida autónoma con cron.
+
+### Si sos un agente leyendo este repo
+
+1. Empezá por `skill/alerta-bcra.md` — describe en lenguaje natural qué
+   hace la herramienta, cuándo se invoca, qué archivos consume y cómo
+   se presenta el reporte.
+2. Para ejecutar: leé la lista de CUITs (`./cuits.txt` en el directorio
+   actual, o `~/.alerta-bcra/cuits.txt` como fallback), consultá la API
+   pública del BCRA, y presentá el reporte siguiendo la plantilla del
+   skill.
+3. Si el usuario pide automatización (cron, notificaciones a canal
+   propio), usá la app de `app/` — ver `app/README.md` para detalle de
+   instalación, `app/.env.example` para variables de entorno,
+   `app/config.yml.example` para esquema futuro.
+
+Diseñado pensando en: Claude Code, Codex, Cursor, Hermes (Herminio), y
+cualquier otro agente que respete markdown con frontmatter YAML. **No
+requiere protocolo propietario ni servidor MCP** — es archivos de texto
+y código que cualquier agente puede leer e interpretar.
+
 ## Inspiración
 
 Hace poco vi una charla de Andrej Karpathy
