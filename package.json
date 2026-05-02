@@ -1,0 +1,16 @@
+{
+  "name": "alerta-bcra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Monitor de Central de Deudores BCRA — skill de Claude Code + app Node.js",
+  "license": "MIT",
+  "author": "Juan Eduardo Riva",
+  "workspaces": [
+    "app"
+  ],
+  "scripts": {
+    "test": "npm -w app test",
+    "dev": "npm -w app run dev",
+    "build": "npm -w app run build"
+  }
+}

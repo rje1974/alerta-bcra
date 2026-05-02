@@ -1,0 +1,15 @@
+feat: README narrativo + prompt.md portable para LLMs
+
+README en castellano con la historia que disparó el proyecto (reunión
+CREA, contexto económico, deudas que crecen silenciosas), las tres
+formas de usarlo (skill / prompt / app), categorías que detecta,
+limitaciones honestas (apunta a mcp-bcra de mortiz-dev como alternativa
+con cobertura más amplia) y referencia a la charla de Karpathy en AI
+Ascent 2026 que inspiró el formato triple.
+
+prompt.md es un archivo copy-paste pensado para cualquier asistente IA
+(ChatGPT, Gemini, Claude.ai web, Grok, etc). Incluye instrucciones,
+shape del endpoint BCRA, código Node.js + bash de fallback para LLMs
+que no pueden hacer fetch directo, y plantilla de reporte.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>

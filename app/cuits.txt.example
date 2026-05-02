@@ -1,0 +1,9 @@
+# alerta-bcra · ejemplo de lista de CUITs/CUILs
+#
+# Una CUIT por línea, con o sin guiones. Líneas que empiezan con # son comentarios.
+# Copiá este archivo como cuits.txt y editalo con tu lista real.
+
+# CUITs públicos de prueba (entes oficiales, no aparecen con deuda):
+30-50000076-1   # BCRA
+33-65517437-9   # AFIP
+30-50001091-2   # Banco Nación

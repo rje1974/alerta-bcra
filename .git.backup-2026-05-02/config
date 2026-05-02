@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[user]
+	email = juaneduardoriva@gmail.com
+	name = Juan Eduardo Riva

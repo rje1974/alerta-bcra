@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 07de41b4179208831689113b5aac44c4a7275187 Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777671782 -0300	commit (initial): Initial scaffold: monorepo skill + app
+07de41b4179208831689113b5aac44c4a7275187 07e7b8ac766fb58f6b6b9decc603132c1776d097 Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777676725 -0300	commit: docs: decisiones de arquitectura + contexto de sesión
+07e7b8ac766fb58f6b6b9decc603132c1776d097 010f3ed21656ca4c94dab30a38cc77050cba7021 Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777677082 -0300	commit: feat: implementar 4 backends de notificación
+010f3ed21656ca4c94dab30a38cc77050cba7021 54dae27570bfc7897d45e576c4e19b02fec230ea Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777677094 -0300	commit: test: cobertura de los 4 backends con mocks
+54dae27570bfc7897d45e576c4e19b02fec230ea 952ad0088866f65b2ffec45d8fd8bfdbde3faaac Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777677196 -0300	commit: docs: guías por canal en docs/canales/
+952ad0088866f65b2ffec45d8fd8bfdbde3faaac 1e8895e8dd5f1b1f9c581f4b0dd5b74d1e14bbcb Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777677347 -0300	commit: feat: skill content completo + ejemplos
+1e8895e8dd5f1b1f9c581f4b0dd5b74d1e14bbcb 0d37747c82ca7d0f9912228c7bd2b8332bb70cdb Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777729736 -0300	commit: fix: parser de cuits.txt soporta comentarios inline + label menos engañoso
+0d37747c82ca7d0f9912228c7bd2b8332bb70cdb 73bffa25c8692aa6e3208eb106945dc79fe4a815 Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777730343 -0300	commit: chore: sanitizar datos privados antes de publicación
+73bffa25c8692aa6e3208eb106945dc79fe4a815 47802ce516afa676d8ca30aed33b9134f4353a03 Juan Eduardo Riva <juaneduardoriva@gmail.com> 1777731724 -0300	commit: feat: README narrativo + prompt.md portable para LLMs

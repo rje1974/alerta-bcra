@@ -1,0 +1,13 @@
+# alerta-bcra-app — config.yml de referencia
+#
+# Por ahora la app lee solo variables de entorno (.env).
+# Este archivo queda como referencia para una futura versión que cargue YAML.
+
+notify_url: "ntfy://alerta-bcra-cambiame"
+heartbeat_url: null
+snapshots_dir: "./snapshots"
+
+bcra:
+  max_retries: 3
+
+# TODO: scheduler interno (cron) + lista inline de cuits
