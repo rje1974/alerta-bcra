@@ -1,13 +1,15 @@
 # Prompt — auditor BCRA para tu LLM
 
-Este archivo es un **prompt copy-paste** que convierte cualquier
-asistente de IA — ChatGPT, Gemini, Claude.ai web, Grok, Perplexity, lo
-que uses — en un auditor de CUITs/CUILs contra la Central de Deudores
-del BCRA Argentina.
+Este archivo es un **prompt copy-paste** pensado para **agentes de IA
+de escritorio que pueden ejecutar herramientas** — Claude Code, Codex,
+Gemini CLI, Cursor, o equivalentes. En esos entornos, el agente recibe
+el prompt, consulta la API pública del BCRA, y te devuelve un reporte
+legible.
 
-Si tu asistente puede hacer requests HTTP (con web browsing o tools
-habilitadas), va a consultar el BCRA directo y mostrarte el reporte. Si
-no puede, te genera código Node.js o bash listo para que lo corras vos.
+En chats web tradicionales (ChatGPT, Claude.ai web, Gemini web, Grok,
+Perplexity) también sirve, pero con un paso intermedio: el chat te
+genera el código Node.js o bash, vos lo corrés en tu compu, y le pegás
+el resultado para que arme el reporte.
 
 ## Cómo usarlo
 

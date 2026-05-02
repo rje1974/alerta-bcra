@@ -18,20 +18,26 @@ ya es una bomba que explota de la peor forma.
 
 ## Tres formas de usarlo
 
-### 1. Skill para Claude Code (la integrada)
+### 1. Prompt para tu agente IA de escritorio (la portátil)
+
+Pensado para agentes con tools de ejecución — Claude Code, Codex,
+Gemini CLI, Cursor, etc. Copiás el contenido de `prompt.md`, lo pegás
+al inicio de la conversación, y el agente consulta el BCRA y te muestra
+el reporte directo.
+
+En chats web tradicionales (ChatGPT, Claude.ai web, Gemini web, Grok)
+también sirve, pero con un paso extra: el chat te genera el código
+Node.js o bash, vos lo corrés en tu compu y le pegás el resultado para
+que arme el reporte legible.
+
+Detalle en [`prompt.md`](prompt.md).
+
+### 2. Skill para Claude Code (la integrada)
 
 Si tenés [Claude Code](https://claude.ai/code) instalado, pegás el
 contenido de `skill/alerta-bcra.md` en tu carpeta de skills y le decís
 "alertá BCRA". Claude busca tu lista, hace los fetches y te muestra el
 reporte en chat. Detalle en [`skill/README.md`](skill/README.md).
-
-### 2. Prompt para tu LLM favorito (la portátil)
-
-Si usás ChatGPT, Gemini, Claude.ai web, Grok, o cualquier otro asistente,
-copiás el contenido de `prompt.md` y lo pegás al inicio de una
-conversación nueva. Después le decís "auditá estos CUITs: ..." y te
-genera el reporte (o el código Node.js / bash si tu asistente no puede
-hacer fetch directo). Detalle en [`prompt.md`](prompt.md).
 
 ### 3. App Node.js con cron (la persistente)
 
@@ -71,8 +77,8 @@ Hace poco vi una charla de Andrej Karpathy
 ([From Vibe Coding to Agentic Engineering](https://www.youtube.com/watch?v=96jN2OCOfLs),
 AI Ascent 2026) que me dejó pensando: ya no programamos solo para
 personas, programamos también para los asistentes de IA con los que cada
-uno trabaja. Y cada asistente quiere las cosas distinto — algunos cargan
-skills, otros leen prompts, otros prefieren correr un programa propio.
+uno trabaja. Y cada asistente quiere las cosas distinto — algunos leen
+prompts, otros cargan skills, otros prefieren correr un programa propio.
 
 Por eso esto viene en tres formatos. Cubrir los tres es la forma más
 honesta de que cada uno lo use con su asistente favorito.
