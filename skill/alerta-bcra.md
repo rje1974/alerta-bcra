@@ -1,6 +1,6 @@
 ---
 name: alerta-bcra
-description: Audita CUITs/CUILs en la Central de Deudores del BCRA. Detecta deudas, situaciones (1=normal a 5=irrecuperable), cheques rechazados. Uso conversacional copy-paste, sin instalar nada.
+description: Audita CUITs/CUILs en la Central de Deudores del BCRA. Detecta deuda reportada, situaciones 1 a 6 y cambios contra snapshots previos. Uso conversacional copy-paste, sin instalar nada.
 ---
 
 # alerta-bcra
@@ -187,6 +187,10 @@ Auditados N CUITs.
 ✓ Salieron de mora (k)
   • ...
 
+$ Cambios relevantes de deuda (k)
+  • XX-XXXXXXXX-X — Razón Social
+    Sit. 1 (normal) · $100.000 → $250.000 (+$150.000 · +150,0%)
+
 Sin cambios (m): XX-XXXXXXXX-X, XX-XXXXXXXX-X, ...
 ```
 
@@ -243,13 +247,17 @@ fs.writeFileSync(path, filtradas.join('\n'));
 
 ## Diff entre corridas (opcional)
 
-Si encontrás `./alerta-bcra-snapshot.json` con resultado de corrida anterior,
-compará y reportá cambios. Categorías:
+Si encontrás `./snapshots/latest.json` con resultado confiable de corrida
+anterior, compará y reportá cambios. Como compatibilidad, si existe
+`./alerta-bcra-snapshot.json`, podés leerlo como snapshot anterior legacy.
+Categorías:
 
 - **Nuevos**: aparecen con deuda ahora, antes no estaban o no tenían deuda.
 - **Empeorados**: situación subió (1→3, 2→4, etc.).
 - **Mejorados**: situación bajó.
 - **Salieron**: tenían deuda y ahora 404 (limpios).
+- **Cambios relevantes de deuda**: misma situación, pero el monto cambió más que
+  el umbral definido por el usuario.
 
 Estructura del snapshot:
 
@@ -263,9 +271,18 @@ Estructura del snapshot:
 }
 ```
 
+Cuando guardes snapshots, usá esta estrategia:
+
+- `./snapshots/latest.json`: último estado confiable para comparar la próxima vez.
+- `./snapshots/YYYY-MM-DD-HHMMSS-ms.json`: histórico crudo de la corrida.
+
+Si una consulta falla pero hay un dato anterior válido, el histórico debe guardar
+el error real y `latest.json` debe conservar el dato anterior. Así no generás
+falsos `NUEVO` o `SALIO` por una falla transitoria.
+
 Después de cada corrida, si guardaste snapshot, ofrecé al usuario:
 
-> "Guardé `./alerta-bcra-snapshot.json` para que la próxima vez te muestre
+> "Guardé `./snapshots/latest.json` para que la próxima vez te muestre
 > sólo lo que cambió."
 
 ---

@@ -37,6 +37,11 @@ function lineaCambio(c: Cambio): string {
       return `  • ${id}\n    ${formatSituacion(c.situacionAnterior)} → ${formatSituacion(c.situacionNueva)} · ${formatPesos(c.totalDeudaAnterior)} → ${formatPesos(c.totalDeudaNueva)}`;
     case 'SALIO':
       return `  • ${id}\n    Estaba en ${formatSituacion(c.situacionAnterior)} (${formatPesos(c.totalDeudaAnterior)}), ahora limpio`;
+    case 'CAMBIO_MONTO': {
+      const signo = c.variacionAbs > 0 ? '+' : '';
+      const pct = c.variacionPercent === null ? '' : ` · ${signo}${c.variacionPercent.toFixed(1)}%`;
+      return `  • ${id}\n    Sit. ${formatSituacion(c.situacion)} · ${formatPesos(c.totalDeudaAnterior)} → ${formatPesos(c.totalDeudaNueva)} (${signo}${formatPesos(c.variacionAbs)}${pct})`;
+    }
   }
 }
 
@@ -55,7 +60,8 @@ export function renderTextoPlano(diff: DiffResult): string {
     diff.nuevos.length +
     diff.empeorados.length +
     diff.mejorados.length +
-    diff.salieron.length;
+    diff.salieron.length +
+    diff.cambiosMonto.length;
 
   if (totalCambios === 0 && diff.errores.length === 0) {
     lineas.push('Sin cambios significativos.');
@@ -86,6 +92,12 @@ export function renderTextoPlano(diff: DiffResult): string {
     lineas.push('');
   }
 
+  if (diff.cambiosMonto.length > 0) {
+    lineas.push(`$ Cambios relevantes de deuda (${diff.cambiosMonto.length})`);
+    diff.cambiosMonto.forEach(c => lineas.push(lineaCambio(c)));
+    lineas.push('');
+  }
+
   if (diff.errores.length > 0) {
     lineas.push(`! Errores de consulta (${diff.errores.length})`);
     diff.errores.forEach(e => lineas.push(`  • ${e.cuit}: ${e.error}`));
@@ -100,6 +112,7 @@ export function renderTitulo(diff: DiffResult): string {
   if (diff.nuevos.length > 0) partes.push(`+${diff.nuevos.length}`);
   if (diff.mejorados.length > 0) partes.push(`▼${diff.mejorados.length}`);
   if (diff.salieron.length > 0) partes.push(`✓${diff.salieron.length}`);
+  if (diff.cambiosMonto.length > 0) partes.push(`$${diff.cambiosMonto.length}`);
   if (partes.length === 0) return 'alerta-bcra · sin cambios';
   return `alerta-bcra · ${partes.join(' ')}`;
 }

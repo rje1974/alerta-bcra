@@ -23,8 +23,20 @@ export interface Snapshot {
 
 export interface SnapshotStore {
   dir: string;
-  guardar(snapshot: Snapshot): { latestPath: string; archivePath: string };
+  guardar(snapshot: Snapshot, latestSnapshot?: Snapshot): { latestPath: string; archivePath: string };
   leerLatest(): Snapshot | null;
+}
+
+export function conservarUltimosValidos(anterior: Snapshot | null, nueva: Snapshot): Snapshot {
+  const registros: Record<string, Consulta> = {};
+  for (const [cuit, consulta] of Object.entries(nueva.registros)) {
+    if (!consulta.ok && anterior?.registros[cuit]?.ok) {
+      registros[cuit] = anterior.registros[cuit];
+    } else {
+      registros[cuit] = consulta;
+    }
+  }
+  return { ...nueva, registros };
 }
 
 export function crearStore(dir: string = './snapshots'): SnapshotStore {
@@ -41,20 +53,33 @@ export function crearStore(dir: string = './snapshots'): SnapshotStore {
     const hh = String(fecha.getHours()).padStart(2, '0');
     const mi = String(fecha.getMinutes()).padStart(2, '0');
     const ss = String(fecha.getSeconds()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}-${hh}${mi}${ss}.json`;
+    const ms = String(fecha.getMilliseconds()).padStart(3, '0');
+    return `${yyyy}-${mm}-${dd}-${hh}${mi}${ss}-${ms}.json`;
+  }
+
+  function pathHistoricoUnico(fecha: Date): string {
+    const base = nombreArchivo(fecha).replace(/\.json$/, '');
+    let candidate = join(dir, `${base}.json`);
+    let i = 1;
+    while (existsSync(candidate)) {
+      candidate = join(dir, `${base}-${i}.json`);
+      i += 1;
+    }
+    return candidate;
   }
 
   return {
     dir,
 
-    guardar(snapshot: Snapshot) {
+    guardar(snapshot: Snapshot, latestSnapshot: Snapshot = snapshot) {
       asegurarDir();
       const fecha = new Date(snapshot.fecha);
-      const archivePath = join(dir, nombreArchivo(fecha));
+      const archivePath = pathHistoricoUnico(fecha);
       const latestPath = join(dir, 'latest.json');
       const payload = JSON.stringify(snapshot, null, 2);
+      const latestPayload = JSON.stringify(latestSnapshot, null, 2);
       writeFileSync(archivePath, payload, 'utf8');
-      writeFileSync(latestPath, payload, 'utf8');
+      writeFileSync(latestPath, latestPayload, 'utf8');
       return { latestPath, archivePath };
     },
 

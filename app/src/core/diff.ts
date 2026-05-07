@@ -45,7 +45,21 @@ export interface CambioSalido extends CambioBase {
   totalDeudaAnterior: number;
 }
 
-export type Cambio = CambioNuevo | CambioEmpeorado | CambioMejorado | CambioSalido;
+export interface CambioMonto extends CambioBase {
+  tipo: 'CAMBIO_MONTO';
+  situacion: number;
+  totalDeudaAnterior: number;
+  totalDeudaNueva: number;
+  variacionAbs: number;
+  variacionPercent: number | null;
+}
+
+export type Cambio = CambioNuevo | CambioEmpeorado | CambioMejorado | CambioSalido | CambioMonto;
+
+export interface DiffOptions {
+  debtChangeAbsThreshold?: number;
+  debtChangePercentThreshold?: number;
+}
 
 export interface DiffResult {
   fechaAnterior: string | null;
@@ -54,6 +68,7 @@ export interface DiffResult {
   empeorados: CambioEmpeorado[];
   mejorados: CambioMejorado[];
   salieron: CambioSalido[];
+  cambiosMonto: CambioMonto[];
   sinCambios: string[];
   errores: { cuit: string; error: string }[];
 }
@@ -67,12 +82,23 @@ function tieneDeuda(c: ConsultaOK): boolean {
 }
 
 export function calcularDiff(anterior: Snapshot | null, nueva: Snapshot): DiffResult {
+  return calcularDiffConOpciones(anterior, nueva);
+}
+
+export function calcularDiffConOpciones(
+  anterior: Snapshot | null,
+  nueva: Snapshot,
+  options: DiffOptions = {}
+): DiffResult {
   const nuevos: CambioNuevo[] = [];
   const empeorados: CambioEmpeorado[] = [];
   const mejorados: CambioMejorado[] = [];
   const salieron: CambioSalido[] = [];
+  const cambiosMonto: CambioMonto[] = [];
   const sinCambios: string[] = [];
   const errores: { cuit: string; error: string }[] = [];
+  const absThreshold = options.debtChangeAbsThreshold ?? 0;
+  const percentThreshold = options.debtChangePercentThreshold ?? 0;
 
   const cuitsAnt = new Set(Object.keys(anterior?.registros || {}));
   const cuitsNuevos = Object.keys(nueva.registros);
@@ -142,6 +168,29 @@ export function calcularDiff(anterior: Snapshot | null, nueva: Snapshot): DiffRe
         totalDeudaNueva: regNuevo.totalDeuda,
       });
     } else {
+      const variacionAbs = regNuevo.totalDeuda - regAntOK.totalDeuda;
+      const variacionPercent = regAntOK.totalDeuda > 0
+        ? (variacionAbs / regAntOK.totalDeuda) * 100
+        : null;
+      const superaAbs = absThreshold > 0 && Math.abs(variacionAbs) >= absThreshold;
+      const superaPercent =
+        percentThreshold > 0 &&
+        variacionPercent !== null &&
+        Math.abs(variacionPercent) >= percentThreshold;
+
+      if (superaAbs || superaPercent) {
+        cambiosMonto.push({
+          tipo: 'CAMBIO_MONTO',
+          cuit,
+          denominacion: regNuevo.denominacion,
+          situacion: sitNueva,
+          totalDeudaAnterior: regAntOK.totalDeuda,
+          totalDeudaNueva: regNuevo.totalDeuda,
+          variacionAbs,
+          variacionPercent,
+        });
+        continue;
+      }
       sinCambios.push(cuit);
     }
   }
@@ -161,6 +210,7 @@ export function calcularDiff(anterior: Snapshot | null, nueva: Snapshot): DiffRe
     empeorados,
     mejorados,
     salieron,
+    cambiosMonto,
     sinCambios,
     errores,
   };

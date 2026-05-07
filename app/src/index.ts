@@ -11,13 +11,15 @@
 
 import { Command } from 'commander';
 import { consultarBCRA } from './core/bcra.js';
-import { calcularDiff } from './core/diff.js';
+import { calcularDiffConOpciones } from './core/diff.js';
 import { renderTextoPlano, renderTitulo } from './core/render.js';
-import { crearStore, type Snapshot } from './core/snapshot.js';
+import { conservarUltimosValidos, crearStore, type Snapshot } from './core/snapshot.js';
 import { loadCuits, addCuit, removeCuit } from './config/cuits.js';
-import { loadConfig } from './config/env.js';
+import { loadConfig, loadEnvFile } from './config/env.js';
 import { notify } from './notify/index.js';
 import { pingHeartbeat } from './heartbeat.js';
+
+loadEnvFile();
 
 const program = new Command();
 
@@ -44,26 +46,43 @@ program
     console.log(`Cargué ${cuits.length} CUITs desde ${source} (${path})`);
     console.log('Consultando BCRA...');
 
+    const store = crearStore(config.snapshotsDir);
+    const anterior = store.leerLatest();
     const registros: Snapshot['registros'] = {};
+    const errores: string[] = [];
     for (const cuit of cuits) {
       process.stdout.write(`  ${cuit} ... `);
       const consulta = await consultarBCRA(cuit, { maxRetries: config.bcraMaxRetries });
-      registros[cuit] = consulta;
       if (!consulta.ok) {
+        errores.push(cuit);
+        registros[cuit] = consulta;
         console.log(`error: ${consulta.error}`);
+        if (anterior?.registros[cuit]?.ok) {
+          console.log('    se conserva el último dato válido para latest.json');
+        }
       } else if (consulta.sinRegistros) {
+        registros[cuit] = consulta;
         console.log('limpio');
       } else {
+        registros[cuit] = consulta;
         console.log(`sit. ${consulta.peorSituacion} · ${consulta.cantidadEntidades} entidad(es)`);
       }
     }
 
     const fecha = new Date().toISOString();
-    const nuevoSnapshot: Snapshot = { fecha, registros };
+    const snapshotConsultado: Snapshot = { fecha, registros };
+    const nuevoSnapshot = conservarUltimosValidos(anterior, snapshotConsultado);
 
-    const store = crearStore(config.snapshotsDir);
-    const anterior = store.leerLatest();
-    const diff = calcularDiff(anterior, nuevoSnapshot);
+    const diff = calcularDiffConOpciones(anterior, nuevoSnapshot, {
+      debtChangeAbsThreshold: config.debtChangeAbsThreshold,
+      debtChangePercentThreshold: config.debtChangePercentThreshold,
+    });
+    for (const cuit of errores) {
+      const actual = nuevoSnapshot.registros[cuit];
+      if (actual?.ok) {
+        diff.errores.push({ cuit, error: 'Consulta falló; se conservó el último dato válido' });
+      }
+    }
 
     const cuerpo = renderTextoPlano(diff);
     const titulo = renderTitulo(diff);
@@ -76,7 +95,7 @@ program
       return;
     }
 
-    const { archivePath } = store.guardar(nuevoSnapshot);
+    const { archivePath } = store.guardar(snapshotConsultado, nuevoSnapshot);
     console.log(`Snapshot guardado en ${archivePath}`);
 
     if (config.notifyUrl) {

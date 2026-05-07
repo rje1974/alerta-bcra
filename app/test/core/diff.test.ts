@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calcularDiff } from '../../src/core/diff.js';
+import { calcularDiff, calcularDiffConOpciones } from '../../src/core/diff.js';
 import type { Snapshot } from '../../src/core/snapshot.js';
 
 const FECHA_ANT = '2026-04-01T08:00:00.000Z';
@@ -135,5 +135,59 @@ describe('calcularDiff', () => {
     const r = calcularDiff(ant, nueva);
     expect(r.errores).toHaveLength(1);
     expect(r.errores[0].error).toBe('timeout');
+  });
+
+  it('misma situación pero cambio grande de monto → CAMBIO_MONTO', () => {
+    const ant = snap(FECHA_ANT, {
+      '20-12345678-9': {
+        ok: true,
+        peorSituacion: 1,
+        totalDeuda: 100000,
+        cantidadEntidades: 1,
+        periodos: [{ periodo: '202603', entidades: [] }],
+        consultadoEn: FECHA_ANT,
+      },
+    });
+    const nueva = snap(FECHA_NUEVA, {
+      '20-12345678-9': {
+        ok: true,
+        peorSituacion: 1,
+        totalDeuda: 180000,
+        cantidadEntidades: 1,
+        periodos: [{ periodo: '202604', entidades: [] }],
+        consultadoEn: FECHA_NUEVA,
+      },
+    });
+
+    const r = calcularDiffConOpciones(ant, nueva, { debtChangeAbsThreshold: 50000 });
+    expect(r.cambiosMonto).toHaveLength(1);
+    expect(r.cambiosMonto[0].variacionAbs).toBe(80000);
+  });
+
+  it('sin umbrales de monto mantiene compatibilidad y no alerta cambios de monto', () => {
+    const ant = snap(FECHA_ANT, {
+      '20-12345678-9': {
+        ok: true,
+        peorSituacion: 1,
+        totalDeuda: 100000,
+        cantidadEntidades: 1,
+        periodos: [{ periodo: '202603', entidades: [] }],
+        consultadoEn: FECHA_ANT,
+      },
+    });
+    const nueva = snap(FECHA_NUEVA, {
+      '20-12345678-9': {
+        ok: true,
+        peorSituacion: 1,
+        totalDeuda: 999999,
+        cantidadEntidades: 1,
+        periodos: [{ periodo: '202604', entidades: [] }],
+        consultadoEn: FECHA_NUEVA,
+      },
+    });
+
+    const r = calcularDiff(ant, nueva);
+    expect(r.cambiosMonto).toHaveLength(0);
+    expect(r.sinCambios).toContain('20-12345678-9');
   });
 });

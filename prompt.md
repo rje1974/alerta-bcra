@@ -198,12 +198,24 @@ Auditados N CUITs.
 ✓ Salieron de mora (k)
   • ...
 
+$ Cambios relevantes de deuda (k)
+  • XX-XXXXXXXX-X — Razón Social
+    Sit. 1 (normal) · $100.000 → $250.000 (+$150.000 · +150,0%)
+
 Sin cambios (m): XX-XXXXXXXX-X, XX-XXXXXXXX-X, ...
 ```
 
 **Importante**: las categorías "Empeoraron / Mejoraron / Salieron"
-requieren comparar contra una corrida anterior. Si es la primera vez
-sin historial, reportá solo "Aparecen con deuda BCRA" y "Sin reportes".
+requieren comparar contra una corrida anterior. "Cambios relevantes de
+deuda" requiere comparar montos dentro de la misma situación y solo debe
+usarse si el usuario definió un umbral absoluto o porcentual. Si es la
+primera vez sin historial, reportá solo "Aparecen con deuda BCRA" y "Sin
+reportes".
+
+Si una consulta falla por red/rate limit y tenés un dato anterior válido,
+no clasifiques ese CUIT como nuevo/mejorado/salido: reportalo en "Errores
+de consulta" y aclará que se conserva el último dato válido para evitar
+falsos cambios.
 
 Formato de pesos: separadores de miles con punto, sin centavos.
 (Ej: $850.000)

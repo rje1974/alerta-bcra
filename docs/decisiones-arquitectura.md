@@ -114,7 +114,7 @@ El core (`app/src/core/`) está inspirado en una versión interna anterior, pero
   rechazados, histórico, padrón AFIP — los dejamos para ola 2 si valen)
 - Sin "nombre local" — mostramos `denominacion` que devuelve BCRA
 - Eventos mapeados al vocabulario user-facing: Nuevos / Empeorados / Mejorados / Salieron
-- Snapshot dual: `latest.json` (para diff rápido) + `YYYY-MM-DD-HHMMSS.json` (histórico)
+- Snapshot dual: `latest.json` confiable para diff + `YYYY-MM-DD-HHMMSS-ms.json` histórico crudo
 
 **Importante**: el monto que devuelve BCRA está en miles de pesos. El parser
 multiplica × 1000 antes de mostrar.
@@ -132,3 +132,18 @@ multiplica × 1000 antes de mostrar.
 
 NO stars/downloads. SÍ: **3 conversaciones útiles** que arranquen a partir del
 proyecto en 6 meses. "Showcase, no producto mantenido."
+
+## Decisión 9: Instrucciones para agentes como interfaz pública
+
+El repo mantiene tres capas para agentes:
+
+| Archivo | Uso |
+|---|---|
+| `prompt.md` | Prompt universal copy-paste para agentes con o sin tools |
+| `skill/alerta-bcra.md` | Skill conversacional para Claude Code |
+| `AGENTS.md` | Contexto de mantenimiento para agentes de código como OpenCode, Codex y Gemini CLI |
+
+**Por qué**: el proyecto no es solo una app; también es un ejemplo de cómo
+empaquetar una tarea repetible para distintos asistentes. Mantener estas capas
+alineadas evita que la skill prometa capacidades que la app no tiene o que el
+prompt quede atrasado respecto del motor.

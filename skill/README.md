@@ -62,8 +62,8 @@ Más ejemplos: ver final de `alerta-bcra.md`.
 3. Parsea el JSON, multiplica montos × 1000 (BCRA reporta en miles), arma un
    reporte en castellano y te lo muestra.
 
-4. Si encuentra `./alerta-bcra-snapshot.json` con corrida previa, calcula
-   diff: Nuevos / Empeorados / Mejorados / Salieron.
+4. Si encuentra `./snapshots/latest.json` con corrida previa confiable, calcula
+   diff: Aparecen con deuda BCRA / Empeorados / Mejorados / Salieron / Cambios de monto.
 
 ## Diferencia con la app Node.js
 
@@ -72,7 +72,7 @@ Más ejemplos: ver final de `alerta-bcra.md`.
 | Instalación | Copy-paste, sin deps | `npm install` en VPS / Pi |
 | Uso | Conversacional ad hoc | Cron diario / semanal |
 | Notificaciones | Mostrar en chat | ntfy / Mattermost / email / webhook |
-| Persistencia | Archivo de texto + snapshot opcional | snapshots/ con histórico completo |
+| Persistencia | Archivo de texto + snapshots compatibles | snapshots/ con histórico completo |
 | Audiencia | Usuario casual | Sysadmin |
 
 Las dos comparten el mismo patrón de URL `cuits.txt`, así que una lista que
